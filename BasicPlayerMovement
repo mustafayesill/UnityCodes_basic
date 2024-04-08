@@ -1,0 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class OtherCharCont : MonoBehaviour
+{
+	// **Basic character Movement** "W,A,S,D "
+
+	
+    public float moveSpeed;
+
+    float horizontalX;
+    float verticalY;
+    
+    void Update()
+    {
+        myInputs();
+    }
+
+    private void myInputs() //This part can be written directly to the update section**
+    {
+        horizontalX = Input.GetAxisRaw("Horizontal"); //Getting keybinds A and D
+        verticalY = Input.GetAxisRaw("Vertical"); // Getting keybinds W and S
+        Vector3 movementDirection = new Vector3(horizontalX, 0 , verticalY); //Explaining (x,y,z) vector which is which (inputs)
+        transform.position += movementDirection * moveSpeed * Time.deltaTime; // Adding Char's position moveSpeed and direction 
+    }
+}
