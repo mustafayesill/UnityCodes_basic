@@ -1,6 +1,5 @@
 //Basic character Movement and jumping, raycast control(ground control) included
 
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
