@@ -1,0 +1,59 @@
+//Basic character Movement and jumping, raycast control(ground control) included
+
+
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class playermovement : MonoBehaviour
+{
+    public float moveSpeed;
+    public float jumpForce;
+    public float groundCheckDistance =3f; //adjust by the player's height
+    Vector3 moveDirection;
+    bool isGrounded;
+
+    float horizontalnp;
+    float verticalInp;
+    Rigidbody rb;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true; //if you don't freeze rotation your character can fall sideways.
+    }
+    private void Update()
+    {
+        isGrounded = GroundCheck();
+    }
+    private void FixedUpdate()
+    {
+        MovePlayer();
+        Jump();
+    }
+    private void MovePlayer()
+    {
+        horizontalnp = Input.GetAxisRaw("Horizontal");
+        verticalInp = Input.GetAxisRaw("Vertical");
+        moveDirection = new Vector3(horizontalnp, 0, verticalInp);
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+    }
+    private void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z); //Resetting y velocity
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isGrounded =false;
+        }
+    }
+    bool GroundCheck()
+    {
+        Ray ray = new Ray(transform.position + Vector3.up, Vector3.down);
+        RaycastHit hit;
+        return Physics.Raycast(ray, out hit, groundCheckDistance);
+    }
+}
